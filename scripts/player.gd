@@ -1,24 +1,21 @@
 extends KinematicBody2D
 
 var speed = 200
-var velocidade_alvo = Vector2.ZERO
-
-func _physics_process(delta):
-	var direcao = Vector2.ZERO
+var gravidade = 800
+var velocidade_pulo = -350 
+var velocidade = Vector2.ZERO 
+const UP = Vector2(0, -1)
 	
-	if Input.is_action_pressed("direita"):
-		direcao.x += 1
-	if Input.is_action_pressed("esquerda"):
-		direcao.x -= 1
-	if Input.is_action_pressed("cima"):
-		direcao.y -= 1
-	if Input.is_action_pressed("baixo"):
-		direcao.y += 1
-		
-	if direcao != Vector2.ZERO:
-		direcao = direcao.normalized()
-		
-	velocidade_alvo = speed * direcao
-	move_and_slide(velocidade_alvo)
-	 
+func _physics_process(delta):
+	velocidade.y += gravidade * delta
 
+	var direcao_x = 0
+	if Input.is_action_pressed("direita"):
+		direcao_x += 1
+	if Input.is_action_pressed("esquerda"):
+		direcao_x -= 1
+
+	velocidade.x = direcao_x * speed
+	if is_on_floor() and Input.is_action_just_pressed("espaço"):
+		velocidade.y = velocidade_pulo
+	velocidade = move_and_slide(velocidade, UP)
