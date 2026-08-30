@@ -48,13 +48,13 @@ text = "SAIR"
 [node name="Camera2D" type="Camera2D" parent="VBoxContainer"]
 position = Vector2( 110, 10 )
 current = true
-zoom = Vector2( 0.6, 0.6 )
+zoom = Vector2( 0.5, 0.5 )
 
 [node name="background" type="Sprite" parent="."]
 modulate = Color( 0.713726, 0.705882, 0.713726, 1 )
 show_behind_parent = true
-position = Vector2( 480, 290 )
-scale = Vector2( 0.505883, 0.405242 )
+position = Vector2( 495, 307.5 )
+scale = Vector2( 0.504235, 0.405273 )
 texture = ExtResource( 3 )
 
 [connection signal="pressed" from="VBoxContainer/jogar" to="." method="_on_jogar_pressed"]

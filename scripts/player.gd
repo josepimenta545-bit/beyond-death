@@ -11,7 +11,10 @@ var ataque = true
 export var cooldown_ataque = 0.5
 var atacando = false
 signal dano
+export var vida_maxima = 100
+var vida = vida_maxima
 
+signal vida_alterada(vida_nova)
 
 func _physics_process(delta):
 	velocidade.y += gravidade * delta
@@ -41,6 +44,24 @@ func _physics_process(delta):
 	
 	velocidade = move_and_slide(velocidade, UP)
 
+#bglh pra levar dano
+var esta_morto = false
+
+func take_damage(dano):
+	if esta_morto:
+		return
+	vida -= dano
+	vida = clamp(vida, 0, vida_maxima)
+	emit_signal("vida_alterada", vida)
+	
+	if vida <= 0:
+		morte()
+	
+func morte():
+	esta_morto = true
+	set_physics_process(false)
+	sprite.play("morto")
+	
 
 func atacar():
 	ataque = false
