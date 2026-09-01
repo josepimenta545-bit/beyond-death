@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var player = $KinematicBody2D
+onready var player = $player
 onready var vida = $HUD/vida
 
 func _ready():

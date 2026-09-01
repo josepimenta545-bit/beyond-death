@@ -6,14 +6,17 @@
 [ext_resource path="res://scripts/main.gd" type="Script" id=4]
 
 [node name="main" type="Node2D"]
+position = Vector2( 0, 4 )
 script = ExtResource( 4 )
 
-[node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 173, 88 )
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 653, 456 )
+vida_maxima = 100
 
 [node name="cenário" parent="." instance=ExtResource( 2 )]
 
-[node name="RigidBody2D" parent="." instance=ExtResource( 3 )]
+[node name="inimigo" parent="." instance=ExtResource( 3 )]
+position = Vector2( 75, 495 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
