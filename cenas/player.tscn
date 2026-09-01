@@ -163,7 +163,7 @@ extents = Vector2( 6, 9 )
 [sub_resource type="RectangleShape2D" id=46]
 extents = Vector2( 8, 14 )
 
-[node name="KinematicBody2D" type="KinematicBody2D" groups=["player"]]
+[node name="player" type="KinematicBody2D" groups=["player"]]
 script = ExtResource( 1 )
 vida_maxima = 10
 
