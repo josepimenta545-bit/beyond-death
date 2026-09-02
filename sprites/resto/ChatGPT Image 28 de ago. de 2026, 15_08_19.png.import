@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Orc_Walk.png-95e6f7982f5b3d0457955297797e3454.stex"
+path="res://.import/ChatGPT Image 28 de ago. de 2026, 15_08_19.png-179043042351e7cd6a4079ea60276d50.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Orc_Walk.png"
-dest_files=[ "res://.import/Orc_Walk.png-95e6f7982f5b3d0457955297797e3454.stex" ]
+source_file="res://sprites/resto/ChatGPT Image 28 de ago. de 2026, 15_08_19.png"
+dest_files=[ "res://.import/ChatGPT Image 28 de ago. de 2026, 15_08_19.png-179043042351e7cd6a4079ea60276d50.stex" ]
 
 [params]
 
@@ -32,4 +32,4 @@ process/normal_map_invert_y=false
 stream=false
 size_limit=0
 detect_3d=true
-svg/scale=1.0
+svg/scale=0.001
