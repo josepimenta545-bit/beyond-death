@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/grama_curva.png-457c1f67015d72d622c1f46d82bfd34c.stex"
+path="res://.import/ATTACK 1 samurai.png-103b9772e9a4f4011e9a2bf60a5f615f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/grama_curva.png"
-dest_files=[ "res://.import/grama_curva.png-457c1f67015d72d622c1f46d82bfd34c.stex" ]
+source_file="res://sprites/personagens/ATTACK 1 samurai.png"
+dest_files=[ "res://.import/ATTACK 1 samurai.png-103b9772e9a4f4011e9a2bf60a5f615f.stex" ]
 
 [params]
 

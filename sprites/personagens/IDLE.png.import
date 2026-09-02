@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/terra.png-f95f24602fcf0ebe4e387ecc03923452.stex"
+path="res://.import/IDLE.png-52cd9e8137ab5bec00db93afa5990dda.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/terra.png"
-dest_files=[ "res://.import/terra.png-f95f24602fcf0ebe4e387ecc03923452.stex" ]
+source_file="res://sprites/personagens/IDLE.png"
+dest_files=[ "res://.import/IDLE.png-52cd9e8137ab5bec00db93afa5990dda.stex" ]
 
 [params]
 
