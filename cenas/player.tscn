@@ -197,6 +197,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [ -17.0 ]
 }
+speed = 500
 vida_maxima = 10
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

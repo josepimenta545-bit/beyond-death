@@ -138,11 +138,11 @@ shape = SubResource( 39 )
 [node name="RayCast2D" type="RayCast2D" parent="."]
 enabled = true
 
-[node name="Position2D" type="Position2D" parent="."]
-position = Vector2( -29, 98 )
+[node name="posicaoA" type="Position2D" parent="."]
+position = Vector2( -26, 84 )
 
-[node name="Position2D2" type="Position2D" parent="."]
-position = Vector2( 413, 104 )
+[node name="posicaoB" type="Position2D" parent="."]
+position = Vector2( 538, 57 )
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

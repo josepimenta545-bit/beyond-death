@@ -12,5 +12,3 @@ func _on_jogar_pressed():
 #sair do jogo
 func _on_sair_pressed():
 	get_tree().quit()
-
-

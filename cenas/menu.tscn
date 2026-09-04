@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/menu.gd" type="Script" id=1]
 [ext_resource path="res://sprites/VCR_OSD_MONO_1.001.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://sprites/resto/ChatGPT Image 28 de ago. de 2026, 15_08_19.png" type="Texture" id=3]
-[ext_resource path="res://sons/musica gameplay.mp3" type="AudioStream" id=4]
+[ext_resource path="res://sons/BeepBox-Song gameplay 2.mp3" type="AudioStream" id=4]
 [ext_resource path="res://scripts/musica.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=3]
