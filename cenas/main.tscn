@@ -13,13 +13,14 @@ script = ExtResource( 4 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 737, 503 )
+speed = 120
 vida_maxima = 100
 
 [node name="cenário" parent="." instance=ExtResource( 2 )]
 position = Vector2( 295, 177 )
 
 [node name="inimigo" parent="." instance=ExtResource( 3 )]
-position = Vector2( 236, 504 )
+position = Vector2( 252, 498 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
