@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sons/BeepBox-Song gameplay 2.mp3" type="AudioStream" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends AudioStreamPlayer
+onready var tween = $Tween
+
+func _ready():
+	volume_db = -30.0
+	play()
+	tween.interpolate_property(Musicaglobal, \"volume_db\", -30, 0, 2.0,Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	tween.start()
+"
+
+[node name="musica" type="AudioStreamPlayer"]
+stream = ExtResource( 2 )
+bus = "musicamenu"
+script = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]

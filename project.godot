@@ -15,6 +15,10 @@ run/main_scene="res://cenas/menu.tscn"
 boot_splash/use_filter=false
 config/icon="res://icon.png"
 
+[autoload]
+
+Musicaglobal="*res://cenas/musicaglobal.tscn"
+
 [display]
 
 window/size/width=1366
