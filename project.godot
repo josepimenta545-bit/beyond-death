@@ -25,7 +25,6 @@ window/stretch/aspect="expand"
 [global]
 
 textura=false
-hitbox=false
 
 [gui]
 
