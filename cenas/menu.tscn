@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/menu.gd" type="Script" id=1]
 [ext_resource path="res://sprites/VCR_OSD_MONO_1.001.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://sprites/ChatGPT Image 28 de ago. de 2026, 15_08_19.png" type="Texture" id=3]
-[ext_resource path="res://sons/BeepBox-Song projeto 2.mp3.mp3" type="AudioStream" id=4]
+[ext_resource path="res://sprites/resto/ChatGPT Image 28 de ago. de 2026, 15_08_19.png" type="Texture" id=3]
+[ext_resource path="res://sons/BeepBox-Song gameplay 2.mp3" type="AudioStream" id=4]
+[ext_resource path="res://scripts/musica.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=3]
 size = 17
@@ -58,10 +59,11 @@ position = Vector2( 495, 307.5 )
 scale = Vector2( 0.504235, 0.405273 )
 texture = ExtResource( 3 )
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="musica" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
-volume_db = 0.389
-autoplay = true
+script = ExtResource( 5 )
+
+[node name="Tween" type="Tween" parent="musica"]
 
 [connection signal="pressed" from="VBoxContainer/jogar" to="." method="_on_jogar_pressed"]
 [connection signal="pressed" from="VBoxContainer/sair" to="." method="_on_sair_pressed"]

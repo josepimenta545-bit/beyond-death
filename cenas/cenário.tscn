@@ -703,9 +703,10 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 28/z_index = 0
 
 [node name="cenário" type="Node2D"]
-position = Vector2( -1, -2 )
+position = Vector2( 266, 57 )
 
 [node name="chão" type="TileMap" parent="."]
+scale = Vector2( 0.7, 0.7 )
 tile_set = SubResource( 18 )
 cell_size = Vector2( 32, 32 )
 format = 1
