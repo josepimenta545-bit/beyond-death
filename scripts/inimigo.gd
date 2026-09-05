@@ -66,9 +66,9 @@ func _physics_process(delta):
 var jogador_alcance = false
 
 #verifica se o jogador entrou no campo de visao
-func _on_Area2D_body_entered(body):
+func _on_Area2D_body_entered(_body):
 	jogador_alcance = true
-func _on_Area2D_body_exited(body):
+func _on_Area2D_body_exited(_body):
 	jogador_alcance = false
 
 #função da perseguição: ativa se o player entrar no campo de visao

@@ -3,7 +3,7 @@ extends Control
 onready var musica = $musica
 
 func _ready():
-	musica
+	musica.play()
 
 #entrar no jogo
 func _on_jogar_pressed():
