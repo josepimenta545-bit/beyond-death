@@ -191,9 +191,6 @@ animations = [ {
 radius = 7.0
 height = 16.0
 
-[sub_resource type="RectangleShape2D" id=47]
-extents = Vector2( 7.75, 6.375 )
-
 [node name="player" type="KinematicBody2D" groups=["player"]]
 collision_layer = 2
 script = ExtResource( 1 )
