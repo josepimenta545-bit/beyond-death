@@ -14,12 +14,14 @@ var cone_visao = 360
 var direcao_visao = Vector2.RIGHT
 var indo_AB = true
 var pode_perseguir
-
+export var vida_cheia = 40
+var vida = vida_cheia
 #pegar o nó do jogador
 func _ready():
-	 player = get_tree().get_nodes_in_group("player")[0]
-	 posicaoA = posicaoA.global_position
-	 posicaoB = posicaoB.global_position
+	add_to_group("inimigo")
+	player = get_tree().get_nodes_in_group("player")[0]
+	posicaoA = posicaoA.global_position
+	posicaoB = posicaoB.global_position
 
 #movimento do inimigo
 #visao
@@ -95,3 +97,20 @@ func perseguicao():
 		return true
 	else:
 		return false
+		
+#funçao pra ele tomar dano
+var morto = false
+func take_damage(dano_ataque):
+	if morto:
+		return
+	vida -= dano_ataque
+	vida = clamp(vida, 0, vida_cheia)
+	if vida <= 0:
+		morte()
+
+func morte():
+	morto = true
+	set_physics_process(false)
+	sprite.play("morrendo")#aq é pra quando adicionar uma animaçao de morte
+	yield(sprite, "animation_finished")#aq tbm
+	queue_free()
