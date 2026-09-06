@@ -139,7 +139,7 @@ shape = SubResource( 39 )
 enabled = true
 
 [node name="posicaoA" type="Position2D" parent="."]
-position = Vector2( -26, 84 )
+position = Vector2( -18, 71 )
 
 [node name="posicaoB" type="Position2D" parent="."]
 position = Vector2( 538, 57 )

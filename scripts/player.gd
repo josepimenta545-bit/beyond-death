@@ -78,6 +78,7 @@ func atacar():
 	ataque = true
 	atacando = false
 
+
 #ngc pra controlar a hitbox do ataque
 func _ready():
 	hitbox.monitoring = false

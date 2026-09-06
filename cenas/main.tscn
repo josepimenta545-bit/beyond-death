@@ -20,7 +20,22 @@ vida_maxima = 100
 position = Vector2( 295, 177 )
 
 [node name="inimigo" parent="." instance=ExtResource( 3 )]
-position = Vector2( 252, 498 )
+position = Vector2( 252, 578 )
+
+[node name="posicaoA" parent="inimigo" index="4"]
+position = Vector2( -3, 7 )
+
+[node name="posicaoB" parent="inimigo" index="5"]
+position = Vector2( 505, -15 )
+
+[node name="inimigo2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 806, 267 )
+
+[node name="posicaoA" parent="inimigo2" index="4"]
+position = Vector2( -5, 5 )
+
+[node name="posicaoB" parent="inimigo2" index="5"]
+position = Vector2( -503, -9 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -34,3 +49,6 @@ autoplay = true
 script = ExtResource( 6 )
 
 [node name="Tween" type="Tween" parent="AudioStreamPlayer"]
+
+[editable path="inimigo"]
+[editable path="inimigo2"]

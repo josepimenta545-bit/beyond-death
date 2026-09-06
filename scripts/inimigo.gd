@@ -1,8 +1,8 @@
 extends KinematicBody2D
 #variaveis
 onready var raycast = $RayCast2D
-onready var posicaoA = $posicaoA
-onready var posicaoB = $posicaoB
+onready var posicaoA_node = $posicaoA
+onready var posicaoB_node = $posicaoB
 onready var sprite = $AnimatedSprite
 export var velocidade = 110
 export var pulo = -200
@@ -16,12 +16,16 @@ var indo_AB = true
 var pode_perseguir
 export var vida_cheia = 40
 var vida = vida_cheia
+
+var posicaoA: Vector2
+var posicaoB: Vector2
+
 #pegar o nó do jogador
 func _ready():
 	add_to_group("inimigo")
 	player = get_tree().get_nodes_in_group("player")[0]
-	posicaoA = posicaoA.global_position
-	posicaoB = posicaoB.global_position
+	posicaoA = posicaoA_node.global_position
+	posicaoB = posicaoB_node.global_position
 
 #movimento do inimigo
 #visao
@@ -34,21 +38,26 @@ func _physics_process(delta):
 		var player_pos = player.global_position
 		direcao = (player_pos - inimigo_pos).normalized()
 		vetor.x = direcao.x * velocidade
+		var distancia = inimigo_pos - player_pos
+		if distancia.length() <= 30:
+			vetor.x = 0
+			direcao.x = 0
 	else:
-		if indo_AB:
-			var inimigo_pos = global_position
+		var inimigo_pos = global_position
+		if indo_AB == true:
 			direcao = (posicaoB - inimigo_pos).normalized()
 			vetor.x = direcao.x * velocidade
-			var distancia = inimigo_pos - posicaoB
-			if distancia.length() <= 5:
+			var distancia = abs(inimigo_pos.x - posicaoB.x)
+			if distancia <= 10.0:
 				indo_AB = false
+				print(indo_AB)
 		else:
-			var inimigo_pos = global_position
 			direcao = (posicaoA - inimigo_pos).normalized()
 			vetor.x = direcao.x * velocidade
-			var distancia = inimigo_pos - posicaoA
-			if distancia.length() <= 5:
+			var distancia = abs(inimigo_pos.x - posicaoA.x)
+			if distancia <= 10.0:
 				indo_AB = true
+				print(indo_AB)
 	
 		#animações
 	if direcao.x < 0:
