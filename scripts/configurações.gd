@@ -32,12 +32,11 @@ func _on_CheckButton_toggled(button_pressed):
 
 #bglh da resolução
 func adicionar_itens():
+	optionbutton.add_item("resoluções")
 	optionbutton.add_item("640x400")
 	optionbutton.add_item("800x600")
 	optionbutton.add_item("1280x720")
 	optionbutton.add_item("1366x768 ",-1)
-
-
 
 func _on_OptionButton_item_selected(index):
 	var selecao = resolucoes[index]

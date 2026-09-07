@@ -1,26 +1,32 @@
 extends KinematicBody2D
 #variaveis
+
+#nós
 onready var raycast = $RayCast2D
 onready var posicaoA_node = $posicaoA
 onready var posicaoB_node = $posicaoB
 onready var sprite = $AnimatedSprite
 export var velocidade = 110
 export var pulo = -200
+
+#movimento/posição
 var player 
 export var gravidade = 800
 var vetor = Vector2.ZERO
 var UP = Vector2(0, -1)
 var cone_visao = 360
 var direcao_visao = Vector2.RIGHT
+
+#outros bglh ai
 var indo_AB = true
 var pode_perseguir
 export var vida_cheia = 40
 var vida = vida_cheia
-
+var tomando_dano = false
 var posicaoA: Vector2
 var posicaoB: Vector2
 
-#pegar o nó do jogador
+#pegar o nó do jogador e posições de patrulha
 func _ready():
 	add_to_group("inimigo")
 	player = get_tree().get_nodes_in_group("player")[0]
@@ -28,11 +34,11 @@ func _ready():
 	posicaoB = posicaoB_node.global_position
 
 #movimento do inimigo
-#visao
 func _physics_process(delta):
 	vetor.y += gravidade * delta
 	var direcao = Vector2.ZERO
 	pode_perseguir = perseguicao()
+	#movimento da perseguição
 	if pode_perseguir:
 		var inimigo_pos = global_position
 		var player_pos = player.global_position
@@ -42,6 +48,7 @@ func _physics_process(delta):
 		if distancia.length() <= 30:
 			vetor.x = 0
 			direcao.x = 0
+	#movimento da patrulha
 	else:
 		var inimigo_pos = global_position
 		if indo_AB == true:
@@ -59,17 +66,18 @@ func _physics_process(delta):
 				indo_AB = true
 				print(indo_AB)
 	
-		#animações
-	if direcao.x < 0:
-		sprite.play("andar")
-		sprite.flip_h = true
-		direcao_visao = Vector2.LEFT
-	elif direcao.x > 0:
-		sprite.flip_h = false
-		sprite.play("andar")
-		direcao_visao = Vector2.RIGHT
-	else:
-		sprite.play("parado")
+	#animações
+	if not tomando_dano:
+		if direcao.x < 0:
+			sprite.play("andar")
+			sprite.flip_h = true
+			direcao_visao = Vector2.LEFT
+		elif direcao.x > 0:
+			sprite.flip_h = false
+			sprite.play("andar")
+			direcao_visao = Vector2.RIGHT
+		else:
+			sprite.play("parado")
 	
 	vetor = move_and_slide(vetor, UP)
 
@@ -87,6 +95,7 @@ func perseguicao():
 	if jogador_alcance == false:
 		return false
 	
+	#movimento do inimigo
 	var inimigo_pos = global_position
 	var player_pos = player.global_position
 	var direcao = player_pos - inimigo_pos
@@ -95,7 +104,8 @@ func perseguicao():
 		
 	if angulo >= deg2rad(cone_visao / 2.0):
 		return false
-		
+	
+	#raio de visão do inimigo
 	raycast.cast_to = direcao
 	raycast.force_raycast_update()
 	var colidiu = raycast.is_colliding()
@@ -114,12 +124,21 @@ func take_damage(dano_ataque):
 		return
 	vida -= dano_ataque
 	vida = clamp(vida, 0, vida_cheia)
+	if vida > 0:
+		tomando_dano = true
+		sprite.play("machucado")
 	if vida <= 0:
 		morte()
 
+#função de morte
 func morte():
 	morto = true
 	set_physics_process(false)
 	sprite.play("morrendo")#aq é pra quando adicionar uma animaçao de morte
 	yield(sprite, "animation_finished")#aq tbm
 	queue_free()
+
+#termina animação de levar dano
+func _on_AnimatedSprite_animation_finished():
+	if sprite.animation == "machucado":
+		tomando_dano = false
