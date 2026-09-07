@@ -8,6 +8,6 @@ func _on_jogar_pressed():
 func _on_sair_pressed():
 	get_tree().quit()
 
-
+#configurações
 func _on_configuraes_pressed():
 	get_tree().change_scene("res://cenas/configurações.tscn")

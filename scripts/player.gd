@@ -2,11 +2,15 @@ extends KinematicBody2D
 
 #variaveis
 onready var sprite = $AnimatedSprite #serve pra fazer as animações mais pra frente
+
+#movimento
 export var speed = 110
 var gravidade = 800
 export var velocidade_pulo = -350 
 var velocidade = Vector2.ZERO 
 const UP = Vector2(0, -1)
+
+#combate e vida
 var ataque = true
 export var cooldown_ataque = 0.5
 var atacando = false
@@ -77,6 +81,7 @@ func atacar():
 	yield(get_tree().create_timer(cooldown_ataque), "timeout")
 	ataque = true
 	atacando = false
+
 
 #ngc pra controlar a hitbox do ataque
 func _ready():

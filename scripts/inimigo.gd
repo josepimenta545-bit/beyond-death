@@ -1,66 +1,83 @@
 extends KinematicBody2D
 #variaveis
+
+#nós
 onready var raycast = $RayCast2D
-onready var posicaoA = $posicaoA
-onready var posicaoB = $posicaoB
+onready var posicaoA_node = $posicaoA
+onready var posicaoB_node = $posicaoB
 onready var sprite = $AnimatedSprite
 export var velocidade = 110
 export var pulo = -200
+
+#movimento/posição
 var player 
 export var gravidade = 800
 var vetor = Vector2.ZERO
 var UP = Vector2(0, -1)
 var cone_visao = 360
 var direcao_visao = Vector2.RIGHT
+
+#outros bglh ai
 var indo_AB = true
 var pode_perseguir
 export var vida_cheia = 40
 var vida = vida_cheia
-#pegar o nó do jogador
+var tomando_dano = false
+var posicaoA: Vector2
+var posicaoB: Vector2
+
+#pegar o nó do jogador e posições de patrulha
 func _ready():
 	add_to_group("inimigo")
 	player = get_tree().get_nodes_in_group("player")[0]
-	posicaoA = posicaoA.global_position
-	posicaoB = posicaoB.global_position
+	posicaoA = posicaoA_node.global_position
+	posicaoB = posicaoB_node.global_position
 
 #movimento do inimigo
-#visao
 func _physics_process(delta):
 	vetor.y += gravidade * delta
 	var direcao = Vector2.ZERO
 	pode_perseguir = perseguicao()
+	#movimento da perseguição
 	if pode_perseguir:
 		var inimigo_pos = global_position
 		var player_pos = player.global_position
 		direcao = (player_pos - inimigo_pos).normalized()
 		vetor.x = direcao.x * velocidade
+		var distancia = inimigo_pos - player_pos
+		if distancia.length() <= 30:
+			vetor.x = 0
+			direcao.x = 0
+	#movimento da patrulha
 	else:
-		if indo_AB:
-			var inimigo_pos = global_position
+		var inimigo_pos = global_position
+		if indo_AB == true:
 			direcao = (posicaoB - inimigo_pos).normalized()
 			vetor.x = direcao.x * velocidade
-			var distancia = inimigo_pos - posicaoB
-			if distancia.length() <= 5:
+			var distancia = abs(inimigo_pos.x - posicaoB.x)
+			if distancia <= 10.0:
 				indo_AB = false
+				print(indo_AB)
 		else:
-			var inimigo_pos = global_position
 			direcao = (posicaoA - inimigo_pos).normalized()
 			vetor.x = direcao.x * velocidade
-			var distancia = inimigo_pos - posicaoA
-			if distancia.length() <= 5:
+			var distancia = abs(inimigo_pos.x - posicaoA.x)
+			if distancia <= 10.0:
 				indo_AB = true
+				print(indo_AB)
 	
-		#animações
-	if direcao.x < 0:
-		sprite.play("andar")
-		sprite.flip_h = true
-		direcao_visao = Vector2.LEFT
-	elif direcao.x > 0:
-		sprite.flip_h = false
-		sprite.play("andar")
-		direcao_visao = Vector2.RIGHT
-	else:
-		sprite.play("parado")
+	#animações
+	if not tomando_dano:
+		if direcao.x < 0:
+			sprite.play("andar")
+			sprite.flip_h = true
+			direcao_visao = Vector2.LEFT
+		elif direcao.x > 0:
+			sprite.flip_h = false
+			sprite.play("andar")
+			direcao_visao = Vector2.RIGHT
+		else:
+			sprite.play("parado")
 	
 	vetor = move_and_slide(vetor, UP)
 
@@ -78,6 +95,7 @@ func perseguicao():
 	if jogador_alcance == false:
 		return false
 	
+	#movimento do inimigo
 	var inimigo_pos = global_position
 	var player_pos = player.global_position
 	var direcao = player_pos - inimigo_pos
@@ -86,7 +104,8 @@ func perseguicao():
 		
 	if angulo >= deg2rad(cone_visao / 2.0):
 		return false
-		
+	
+	#raio de visão do inimigo
 	raycast.cast_to = direcao
 	raycast.force_raycast_update()
 	var colidiu = raycast.is_colliding()
@@ -105,12 +124,21 @@ func take_damage(dano_ataque):
 		return
 	vida -= dano_ataque
 	vida = clamp(vida, 0, vida_cheia)
+	if vida > 0:
+		tomando_dano = true
+		sprite.play("machucado")
 	if vida <= 0:
 		morte()
 
+#função de morte
 func morte():
 	morto = true
 	set_physics_process(false)
 	sprite.play("morrendo")#aq é pra quando adicionar uma animaçao de morte
 	yield(sprite, "animation_finished")#aq tbm
 	queue_free()
+
+#termina animação de levar dano
+func _on_AnimatedSprite_animation_finished():
+	if sprite.animation == "machucado":
+		tomando_dano = false
