@@ -1,13 +1,13 @@
 extends Control
 
-#entrar no jogo
+	# //entrar no jogo\\
 func _on_jogar_pressed():
 	get_tree().change_scene("res://cenas/main.tscn")
 
-#sair do jogo
+	# //sair do jogo\\
 func _on_sair_pressed():
 	get_tree().quit()
 
-#configurações
+	# //configurações\\
 func _on_configuraes_pressed():
 	get_tree().change_scene("res://cenas/configurações.tscn")

@@ -1,16 +1,24 @@
 extends KinematicBody2D
 
-#variaveis
+	# //variaveis\\
+onready var timer = $Timer
 onready var sprite = $AnimatedSprite #serve pra fazer as animações mais pra frente
 
-#movimento
+	# //movimento\\
 export var speed = 110
 var gravidade = 800
 export var velocidade_pulo = -350 
 var velocidade = Vector2.ZERO 
 const UP = Vector2(0, -1)
+	# //dash\\
+var pode_dar_dash = true
+var cooldown_dash = 1
+var duracao_dash = 0.3
+var on_dash = false
+export var velocidade_dash = 500
+var direcao_dash: int
 
-#combate e vida
+	# //combate e vida\\
 var ataque = true
 export var cooldown_ataque = 0.5
 var atacando = false
@@ -22,39 +30,70 @@ onready var hitbox = $hitbox_ataque
 signal vida_alterada(vida_nova)
 
 var olhando_direita = true
-func _physics_process(delta):
-	velocidade.y += gravidade * delta
-#movimento esquerda e direita e animações andando pra esquerda,direita e parado
-	var direcao_x = 0
-	if Input.is_action_pressed("direita"):
-		direcao_x += 1
-		sprite.flip_h = false
-		olhando_direita = true
-		if not atacando:
-			sprite.play("andando")
-	elif Input.is_action_pressed("esquerda"):
-		direcao_x -= 1
-		sprite.flip_h = true
-		olhando_direita = false
-		if not atacando:
-			sprite.play("andando")
-	else:
-		if not atacando:
-			sprite.play("parado")
-	hitbox.position.x = abs(hitbox.position.x) if olhando_direita else -abs(hitbox.position.x) #aq é pra mudar a direçao da hitbox do ataque
 
-#pulo e animação de pulo
-	velocidade.x = direcao_x * speed
+func _physics_process(delta):
+	if esta_morto:
+		return
+	velocidade.y += gravidade * delta
+	var direcao_x = 0
+	# //movimento esquerda e direita e animações andando pra esquerda,direita e parado\\
+	if on_dash:
+		velocidade.x = direcao_dash * velocidade_dash
+		velocidade.y = 0
+	else:
+		if Input.is_action_pressed("direita"):
+			direcao_x += 1
+			sprite.flip_h = false
+			olhando_direita = true
+			if not atacando:
+				sprite.play("andando")
+		elif Input.is_action_pressed("esquerda"):
+			direcao_x -= 1
+			sprite.flip_h = true
+			olhando_direita = false
+			if not atacando:
+				sprite.play("andando")
+		else:
+			if not atacando:
+				sprite.play("parado")
+		velocidade.x = direcao_x * speed
+	
+	# //chama a função de dash\\
+	if Input.is_action_just_pressed("dash") and pode_dar_dash and not on_dash:
+		dash()
+	# //muda a direção da hitbox do ataque\\
+	hitbox.position.x = abs(hitbox.position.x) if olhando_direita else -abs(hitbox.position.x) 
+
+	# //pulo e animação de pulo\\
 	if is_on_floor() and Input.is_action_just_pressed("espaço"):
 		velocidade.y = velocidade_pulo
-		#sprite.play("pulando") ainda não vai ser usado, mas quando fizermos os sprites de pulo é so configurar essa linha
+		#sprite.play("pulando") //ainda não vai ser usado, mas quando fizermos os sprites de pulo é apagar o "#" e o comentario\\
+	
+	# //ataque\\
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
 		if ataque:
 			atacar()
-	
+
+
 	velocidade = move_and_slide(velocidade, UP)
 
-#bglh pra levar dano
+	# //controla se o jogador pode ou não dar dash (meio q foi feito por IA mas fds)\\
+func dash():
+	on_dash = true
+	pode_dar_dash = false
+	direcao_dash = 1 if olhando_direita else -1
+	
+	timer.wait_time = duracao_dash
+	timer.start()
+	yield(timer, "timeout")
+	on_dash = false
+	
+	timer.wait_time = cooldown_dash
+	timer.start()
+	yield(timer, "timeout")
+	pode_dar_dash = true
+
+	# //bglh pra levar dano\\
 var esta_morto = false
 
 func take_damage(dano):
@@ -72,7 +111,7 @@ func morte():
 	set_physics_process(false)
 	sprite.play("morto")
 	
-
+	# //bglh pra atacar\\
 func atacar():
 	ataque = false
 	atacando = true
@@ -83,7 +122,7 @@ func atacar():
 	atacando = false
 
 
-#ngc pra controlar a hitbox do ataque
+	# //ngc pra controlar a hitbox do ataque\\
 func _ready():
 	hitbox.monitoring = false
 	hitbox.connect("body_entered", self, "_on_Hitbox_body_entered")
@@ -92,7 +131,7 @@ func controlar_hitbox_ataque():
 	hitbox.monitoring = true
 	yield(get_tree().create_timer(0.15),"timeout")
 	hitbox.monitoring = false
-#aq é pra chamar a funçao de dano
+	# //aq é pra chamar a funçao de dano\\
 func _on_Hitbox_body_entered(body):
 	if body.is_in_group("inimigo") and body.has_method("take_damage"):
 		body.take_damage(dano_ataque)
