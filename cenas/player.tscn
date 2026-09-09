@@ -164,7 +164,7 @@ animations = [ {
 "frames": [ SubResource( 63 ), SubResource( 64 ), SubResource( 65 ), SubResource( 66 ), SubResource( 67 ), SubResource( 68 ), SubResource( 69 ) ],
 "loop": false,
 "name": "ataque1",
-"speed": 15.0
+"speed": 18.0
 }, {
 "frames": [ SubResource( 70 ), SubResource( 71 ), SubResource( 72 ), SubResource( 73 ) ],
 "loop": true,
@@ -207,7 +207,7 @@ vida_maxima = 10
 show_behind_parent = true
 position = Vector2( 0, -16 )
 frames = SubResource( 2 )
-animation = "parado"
+animation = "ataque1"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -224,3 +224,6 @@ position = Vector2( 16, 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox_ataque"]
 shape = SubResource( 85 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

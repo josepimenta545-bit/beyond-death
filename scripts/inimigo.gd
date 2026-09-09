@@ -57,14 +57,12 @@ func _physics_process(delta):
 			var distancia = abs(inimigo_pos.x - posicaoB.x)
 			if distancia <= 10.0:
 				indo_AB = false
-				print(indo_AB)
 		else:
 			direcao = (posicaoA - inimigo_pos).normalized()
 			vetor.x = direcao.x * velocidade
 			var distancia = abs(inimigo_pos.x - posicaoA.x)
 			if distancia <= 10.0:
 				indo_AB = true
-				print(indo_AB)
 	
 	#animações
 	if not tomando_dano:
