@@ -10,6 +10,8 @@ var gravidade = 800
 export var velocidade_pulo = -350 
 var velocidade = Vector2.ZERO 
 const UP = Vector2(0, -1)
+var tempo_na_parede = 0
+var pode_walljump = true
 	# //dash\\
 var pode_dar_dash = true
 var cooldown_dash = 1
@@ -74,8 +76,26 @@ func _physics_process(delta):
 		if ataque:
 			atacar()
 
-
 	velocidade = move_and_slide(velocidade, UP)
+	
+	# //wall jump\\
+	if not is_on_floor() and is_on_wall():
+		tempo_na_parede += delta
+		if tempo_na_parede <= 2:
+			velocidade.y = clamp(velocidade.y, -100000, 100)
+		if Input.is_action_just_pressed("espaço") and pode_walljump:
+			var direcao_parede = 0
+			for i in get_slide_count():
+				var colisoes = get_slide_collision(i)
+				if abs(colisoes.normal.x) > 0.1:
+					direcao_parede = colisoes.normal.x
+					break
+			velocidade.y = velocidade_pulo
+			velocidade.x = direcao_parede * speed
+			pode_walljump = false
+	else:
+		tempo_na_parede = 0
+		pode_walljump = true
 
 	# //controla se o jogador pode ou não dar dash (meio q foi feito por IA mas fds)\\
 func dash():
