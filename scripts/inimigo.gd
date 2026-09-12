@@ -1,5 +1,10 @@
 extends KinematicBody2D
 #variaveis
+export var dano = 10
+export var cooldown_ataque = 1.5
+export var alcance_ataque = 35
+var pode_atacar = true
+var atacando = false
 
 #nós
 onready var raycast = $RayCast2D
@@ -8,6 +13,7 @@ onready var posicaoB_node = $posicaoB
 onready var sprite = $AnimatedSprite
 export var velocidade = 110
 export var pulo = -200
+onready var hitbox_ataque = $hitbox_ataque
 
 #movimento/posição
 var player 
@@ -32,7 +38,30 @@ func _ready():
 	player = get_tree().get_nodes_in_group("player")[0]
 	posicaoA = posicaoA_node.global_position
 	posicaoB = posicaoB_node.global_position
+	#nó da hitbox
+	hitbox_ataque.monitoring = false
+	hitbox_ataque.connect("body_entered", self, "_on_hitbox_ataque_body_entered")
+	
+#funçao do ataque
+func atacar():
+	if morto or atacando:
+		return
+	atacando = true
+	pode_atacar = false
+	sprite.play("atacando")
+	
+	yield(get_tree().create_timer(0.4), "timeout") #aq nois ajusta pra ficar igual o tempo da animaçao
+	
+	hitbox_ataque.monitoring = true
+	yield(get_tree().create_timer(0.1), "timeout")
+	hitbox_ataque.monitoring = false
+	atacando = false
 
+	yield(get_tree().create_timer(cooldown_ataque), "timeout")
+	pode_atacar = true
+func _on_hitbox_ataque_body_entered(body):
+	if body.is_in_group("player") and body.has_method("take_damage"):
+		body.take_damage(dano)
 #movimento do inimigo
 func _physics_process(delta):
 	vetor.y += gravidade * delta
@@ -43,11 +72,18 @@ func _physics_process(delta):
 		var inimigo_pos = global_position
 		var player_pos = player.global_position
 		direcao = (player_pos - inimigo_pos).normalized()
-		vetor.x = direcao.x * velocidade
 		var distancia = inimigo_pos - player_pos
-		if distancia.length() <= 30:
+
+		if distancia.length() <= alcance_ataque:
 			vetor.x = 0
 			direcao.x = 0
+			if pode_atacar and not tomando_dano:
+				atacar()
+		elif distancia.length() <= 30:
+			vetor.x = 0
+			direcao.x = 0
+		else:
+			vetor.x = direcao.x * velocidade
 	#movimento da patrulha
 	else:
 		var inimigo_pos = global_position
@@ -65,7 +101,7 @@ func _physics_process(delta):
 				indo_AB = true
 	
 	#animações
-	if not tomando_dano:
+	if not tomando_dano and not atacando:
 		if direcao.x < 0:
 			sprite.play("andar")
 			sprite.flip_h = true
