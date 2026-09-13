@@ -50,7 +50,7 @@ func atacar():
 	pode_atacar = false
 	sprite.play("atacando")
 	
-	yield(get_tree().create_timer(0.4), "timeout") #aq nois ajusta pra ficar igual o tempo da animaçao
+	yield(get_tree().create_timer(0.5), "timeout") #aq nois ajusta pra ficar igual o tempo da animaçao
 	
 	hitbox_ataque.monitoring = true
 	yield(get_tree().create_timer(0.1), "timeout")
@@ -62,15 +62,16 @@ func atacar():
 func _on_hitbox_ataque_body_entered(body):
 	if body.is_in_group("player") and body.has_method("take_damage"):
 		body.take_damage(dano)
+
 #movimento do inimigo
 func _physics_process(delta):
 	vetor.y += gravidade * delta
 	var direcao = Vector2.ZERO
 	pode_perseguir = perseguicao()
+	var inimigo_pos = global_position
+	var player_pos = player.global_position
 	#movimento da perseguição
 	if pode_perseguir:
-		var inimigo_pos = global_position
-		var player_pos = player.global_position
 		direcao = (player_pos - inimigo_pos).normalized()
 		var distancia = inimigo_pos - player_pos
 
@@ -86,7 +87,6 @@ func _physics_process(delta):
 			vetor.x = direcao.x * velocidade
 	#movimento da patrulha
 	else:
-		var inimigo_pos = global_position
 		if indo_AB == true:
 			direcao = (posicaoB - inimigo_pos).normalized()
 			vetor.x = direcao.x * velocidade
@@ -113,6 +113,7 @@ func _physics_process(delta):
 		else:
 			sprite.play("parado")
 	
+	hitbox_ataque.position.x = abs(hitbox_ataque.position.x) if direcao_visao == Vector2.RIGHT else -abs(hitbox_ataque.position.x)
 	vetor = move_and_slide(vetor, UP)
 
 #"visão" do inimigo

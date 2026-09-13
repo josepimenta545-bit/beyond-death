@@ -202,12 +202,13 @@ __meta__ = {
 }
 speed = 500
 vida_maxima = 10
+dano_ataque = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 show_behind_parent = true
 position = Vector2( 0, -16 )
 frames = SubResource( 2 )
-animation = "ataque1"
+animation = "parado"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -226,5 +227,11 @@ position = Vector2( 16, 1 )
 position = Vector2( 7.3125, 0 )
 shape = SubResource( 85 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer_dash" type="Timer" parent="."]
 one_shot = true
+
+[node name="direita" type="RayCast2D" parent="."]
+cast_to = Vector2( 15, 0 )
+
+[node name="esquerda" type="RayCast2D" parent="."]
+cast_to = Vector2( -15, 0 )
