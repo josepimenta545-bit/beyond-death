@@ -1,8 +1,10 @@
 extends KinematicBody2D
 
 	# //variaveis\\
-onready var timer = $Timer
+onready var timer_dash = $Timer_dash
 onready var sprite = $AnimatedSprite #serve pra fazer as animações mais pra frente
+onready var raycast_direita = $direita
+onready var raycast_esquerda = $esquerda
 
 	# //movimento\\
 export var speed = 110
@@ -12,6 +14,7 @@ var velocidade = Vector2.ZERO
 const UP = Vector2(0, -1)
 var tempo_na_parede = 0
 var pode_walljump = true
+
 	# //dash\\
 var pode_dar_dash = true
 var cooldown_dash = 1
@@ -32,6 +35,12 @@ onready var hitbox = $hitbox_ataque
 signal vida_alterada(vida_nova)
 
 var olhando_direita = true
+var parede
+
+func _ready():
+	hitbox.monitoring = false
+	hitbox.connect("body_entered", self, "_on_Hitbox_body_entered")
+	parede = get_tree().get_nodes_in_group("parede")[0]
 
 func _physics_process(delta):
 	if esta_morto:
@@ -81,15 +90,14 @@ func _physics_process(delta):
 	# //wall jump\\
 	if not is_on_floor() and is_on_wall():
 		tempo_na_parede += delta
+		var direcao_parede = 0
 		if tempo_na_parede <= 2:
 			velocidade.y = clamp(velocidade.y, -100000, 100)
 		if Input.is_action_just_pressed("espaço") and pode_walljump:
-			var direcao_parede = 0
-			for i in get_slide_count():
-				var colisoes = get_slide_collision(i)
-				if abs(colisoes.normal.x) > 0.1:
-					direcao_parede = colisoes.normal.x
-					break
+			if raycast_direita.get_collider() != null and raycast_direita.get_collider().is_in_group("parede"):
+				direcao_parede = -1
+			elif raycast_esquerda.get_collider() != null and raycast_esquerda.get_collider().is_in_group("parede"):
+				direcao_parede = 1
 			velocidade.y = velocidade_pulo
 			velocidade.x = direcao_parede * speed
 			pode_walljump = false
@@ -103,14 +111,14 @@ func dash():
 	pode_dar_dash = false
 	direcao_dash = 1 if olhando_direita else -1
 	
-	timer.wait_time = duracao_dash
-	timer.start()
-	yield(timer, "timeout")
+	timer_dash.wait_time = duracao_dash
+	timer_dash.start()
+	yield(timer_dash, "timeout")
 	on_dash = false
 	
-	timer.wait_time = cooldown_dash
-	timer.start()
-	yield(timer, "timeout")
+	timer_dash.wait_time = cooldown_dash
+	timer_dash.start()
+	yield(timer_dash, "timeout")
 	pode_dar_dash = true
 
 	# //bglh pra levar dano\\
@@ -143,9 +151,7 @@ func atacar():
 
 
 	# //ngc pra controlar a hitbox do ataque\\
-func _ready():
-	hitbox.monitoring = false
-	hitbox.connect("body_entered", self, "_on_Hitbox_body_entered")
+
 func controlar_hitbox_ataque():
 	yield(get_tree().create_timer(0.2), "timeout")
 	hitbox.monitoring = true

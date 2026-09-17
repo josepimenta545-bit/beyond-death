@@ -12,11 +12,8 @@ var resolucoes = [Vector2(640, 400), Vector2(800, 600), Vector2(1280, 720), Vect
 func _ready():
 	var volume = AudioServer.get_bus_volume_db(music_id)
 	slider.value = db2linear(volume)
-	checkbutton.pressed = not AudioServer.is_bus_mute(music_id)
-	if OS.window_fullscreen == true:
-		tela_cheia.pressed = true
-	else:
-		tela_cheia.pressed = false
+	checkbutton.set_pressed_no_signal(not AudioServer.is_bus_mute(music_id))
+	tela_cheia.set_pressed_no_signal(OS.window_fullscreen)
 	
 	adicionar_itens()
 	
