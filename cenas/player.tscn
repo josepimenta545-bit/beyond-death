@@ -200,9 +200,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [ -17.0 ]
 }
-speed = 500
-vida_maxima = 10
-dano_ataque = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 show_behind_parent = true
@@ -222,6 +219,7 @@ zoom = Vector2( 0.5, 0.5 )
 
 [node name="hitbox_ataque" type="Area2D" parent="."]
 position = Vector2( 16, 1 )
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox_ataque"]
 position = Vector2( 7.3125, 0 )
@@ -235,3 +233,5 @@ cast_to = Vector2( 15, 0 )
 
 [node name="esquerda" type="RayCast2D" parent="."]
 cast_to = Vector2( -15, 0 )
+
+[connection signal="body_entered" from="hitbox_ataque" to="." method="_on_hitbox_ataque_body_entered"]

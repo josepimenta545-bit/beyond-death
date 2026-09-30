@@ -60,7 +60,7 @@ func atacar():
 	yield(get_tree().create_timer(cooldown_ataque), "timeout")
 	pode_atacar = true
 func _on_hitbox_ataque_body_entered(body):
-	if body.is_in_group("player") and body.has_method("take_damage"):
+	if body.is_in_group("player") and body.has_method("take_damage") and not tomando_dano:
 		body.take_damage(dano)
 
 #movimento do inimigo
@@ -159,6 +159,7 @@ func take_damage(dano_ataque):
 		return
 	vida -= dano_ataque
 	vida = clamp(vida, 0, vida_cheia)
+	print(vida)
 	if vida > 0:
 		tomando_dano = true
 		sprite.play("machucado")
@@ -169,11 +170,12 @@ func take_damage(dano_ataque):
 func morte():
 	morto = true
 	set_physics_process(false)
-	sprite.play("morrendo")#aq é pra quando adicionar uma animaçao de morte
-	yield(sprite, "animation_finished")#aq tbm
+	sprite.play("morrendo")
+	yield(sprite, "animation_finished")
 	queue_free()
 
 #termina animação de levar dano
 func _on_AnimatedSprite_animation_finished():
 	if sprite.animation == "machucado":
+		yield(get_tree().create_timer(0.1), "timeout")
 		tomando_dano = false

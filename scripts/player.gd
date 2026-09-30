@@ -29,7 +29,7 @@ export var cooldown_ataque = 0.5
 var atacando = false
 export var vida_maxima = 100
 var vida = vida_maxima
-export var dano_ataque = 10
+export var dano_ataque = 40
 onready var hitbox = $hitbox_ataque
 
 signal vida_alterada(vida_nova)
@@ -39,7 +39,6 @@ var parede
 
 func _ready():
 	hitbox.monitoring = false
-	hitbox.connect("body_entered", self, "_on_Hitbox_body_entered")
 	parede = get_tree().get_nodes_in_group("parede")[0]
 
 func _physics_process(delta):
@@ -157,7 +156,8 @@ func controlar_hitbox_ataque():
 	hitbox.monitoring = true
 	yield(get_tree().create_timer(0.15),"timeout")
 	hitbox.monitoring = false
+
 	# //aq é pra chamar a funçao de dano\\
-func _on_Hitbox_body_entered(body):
+func _on_hitbox_ataque_body_entered(body):
 	if body.is_in_group("inimigo") and body.has_method("take_damage"):
 		body.take_damage(dano_ataque)

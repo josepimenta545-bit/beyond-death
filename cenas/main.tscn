@@ -26,10 +26,9 @@ position = Vector2( 0, 4 )
 script = ExtResource( 4 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 28, 587 )
+position = Vector2( 40, 568 )
 speed = 120
-vida_maxima = 100
-dano_ataque = 10
+dano_ataque = 1
 
 [node name="cenário" parent="." instance=ExtResource( 2 )]
 position = Vector2( 295, 177 )
@@ -45,12 +44,16 @@ position = Vector2( 221, 10 )
 
 [node name="inimigo2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 773, 557 )
+vida_cheia = 400
 
 [node name="posicaoA" parent="inimigo2" index="4"]
 position = Vector2( -29, 12 )
 
 [node name="posicaoB" parent="inimigo2" index="5"]
 position = Vector2( 168, -53 )
+
+[node name="boss-fase1" parent="." instance=ExtResource( 6 )]
+position = Vector2( 298, 17 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -64,8 +67,6 @@ autoplay = true
 script = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="AudioStreamPlayer"]
-
-[node name="boss-fase1" parent="." instance=ExtResource( 6 )]
 
 [editable path="inimigo"]
 [editable path="inimigo2"]

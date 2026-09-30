@@ -163,7 +163,6 @@ extents = Vector2( 19.5, 10 )
 position = Vector2( 561, 416 )
 collision_layer = 4
 script = ExtResource( 1 )
-dano = 30
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -1, 3 )
