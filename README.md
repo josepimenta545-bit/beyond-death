@@ -1,1 +1,3 @@
-projeto lá dos mano do senai
+GDD - Beyond death
+
+História do jogo:
