@@ -1,3 +1,3 @@
 GDD - Beyond death
 
-História do jogo:
+História do jogo
